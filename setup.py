@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 from setuptools import setup
+from setuptools.command.install import install
 
 sys.path.append(os.path.join('doc', 'common'))
 try:
@@ -30,9 +31,17 @@ class import_cldr(Command):
         c.wait()
 
 
+class custom_install(install):
+    """Download cldr automatically during install."""
+    def run(self):
+        c = subprocess.Popen([sys.executable, 'scripts/download_import_cldr.py'])
+        c.wait()
+        install.run(self)
+
+
 setup(
     name='Babel',
-    version='2.1-alpha',
+    version='2.1draft',
     description='Internationalization utilities',
     long_description=\
 """A collection of tools for internationalizing Python applications.""",
@@ -63,7 +72,8 @@ setup(
         'pytz>=0a',
     ],
 
-    cmdclass={'build_doc': build_doc, 'test_doc': test_doc,
+    cmdclass={'install': custom_install,
+              'build_doc': build_doc, 'test_doc': test_doc,
               'import_cldr': import_cldr},
 
     zip_safe=False,
