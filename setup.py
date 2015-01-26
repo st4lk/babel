@@ -41,7 +41,7 @@ class custom_install(install):
 
 setup(
     name='Babel',
-    version='2.1.1-draft',
+    version='2.1.2-draft',
     description='Internationalization utilities',
     long_description=\
 """A collection of tools for internationalizing Python applications.""",
